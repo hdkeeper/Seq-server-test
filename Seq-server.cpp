@@ -45,12 +45,8 @@ int main()
 		cout << "Listening on port " << LISTEN_PORT << endl;
 
 		while (true) {
-			// TEST
-			sockaddr clientAddr;
-			int clientAddrLen = sizeof(clientAddr);
-
 			int clientSocket = 0;
-			if (Socket::ok(clientSocket = Socket::accept(serverSocket, &clientAddr, &clientAddrLen))) {
+			if (Socket::ok(clientSocket = Socket::accept(serverSocket, nullptr, nullptr))) {
 				auto handler = new ClientHandler(clientSocket);
 				thread(&ClientHandler::main, handler).detach();
 			}
