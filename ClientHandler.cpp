@@ -89,7 +89,7 @@ bool ClientHandler::executeCommand(const string &cmd) {
 	return false;
 }
 
-// Здесь i от 1 до SEQ_COUNT
+// Здесь idx от 1 до SEQ_COUNT
 bool ClientHandler::setupSequence(int idx, uint64_t start, uint64_t step) {
 	if (idx < 1 || idx > ClientHandler::SEQ_COUNT) {
 		return false;

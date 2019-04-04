@@ -16,7 +16,7 @@ namespace Socket {
 	// Адреса
 	int getaddrinfo(const char *node, const char *service, const addrinfo *hints, addrinfo **result);
 	void freeaddrinfo(addrinfo * &result);
-	
+
 	// Проверка
 	bool ok(int s);
 

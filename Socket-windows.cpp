@@ -52,15 +52,15 @@ namespace Socket {
 	int bind(int s, const sockaddr *addr, int addrlen) {
 		return ::bind(s, addr, addrlen);
 	}
-	
+
 	int listen(int s, int backlog) {
 		return ::listen(s, backlog);
 	}
-	
+
 	int connect(int s, const sockaddr *addr, int addrlen) {
 		return ::connect(s, addr, addrlen);
 	}
-	
+
 	int accept(int s, sockaddr *addr, int *addrlen) {
 		return (int) ::accept(s, addr, addrlen);
 	}
@@ -68,27 +68,27 @@ namespace Socket {
 	// Чтение и запись
 
 	int recv(int s, void *buf, int len, int flags) {
-		return ::recv(s, (char *) buf, len, flags);
+		return ::recv(s, (char *)buf, len, flags);
 	}
 
 	int recvfrom(int s, void *buf, int len, int flags, sockaddr *from, int *fromlen) {
-		return ::recvfrom(s, (char *) buf, len, flags, from, fromlen);
+		return ::recvfrom(s, (char *)buf, len, flags, from, fromlen);
 	}
-	
+
 	int read(int s, void *buf, int len) {
-		return ::recv(s, (char *) buf, len, 0);
+		return ::recv(s, (char *)buf, len, 0);
 	}
 
 	int send(int s, const void *buf, int len, int flags) {
-		return ::send(s, (const char *) buf, len, flags);
+		return ::send(s, (const char *)buf, len, flags);
 	}
 
 	int sendto(int s, const void *buf, int len, int flags, const sockaddr *to, int tolen) {
-		return ::sendto(s, (const char *) buf, len, flags, to, tolen);
+		return ::sendto(s, (const char *)buf, len, flags, to, tolen);
 	}
-	
+
 	int write(int s, const void *buf, int len) {
-		return ::send(s, (const char *) buf, len, 0);
+		return ::send(s, (const char *)buf, len, 0);
 	}
 
 	// Закрытие
