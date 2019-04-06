@@ -8,7 +8,7 @@
 using namespace std;
 
 
-ClientHandler::ClientHandler(int socket) {
+ClientHandler::ClientHandler(Socket &socket) {
 	this->socket = socket;
 	for (int i = 0; i < SEQ_COUNT; i++) {
 		cur[i] = start[i] = step[i] = 0;
@@ -16,7 +16,7 @@ ClientHandler::ClientHandler(int socket) {
 }
 
 ClientHandler::~ClientHandler() {
-	Socket::close(socket);
+	socket.close();
 }
 
 
@@ -28,19 +28,14 @@ void ClientHandler::main() {
 
 	try {
 		// Отправить приглашение
-		if (!Socket::ok(Socket::send(socket, prompt.c_str(), (int)prompt.size(), 0))) {
-			throw Socket::error("Network send error");
-		}
+		socket.send(prompt.c_str(), (int)prompt.size());
 
 		while (true) {
 			// Получить данные
 			memset(recvBuf, 0, sizeof(recvBuf));
-			int received = Socket::recv(socket, recvBuf, CMD_MAX_LEN, 0);
+			int received = socket.recv(recvBuf, CMD_MAX_LEN);
 			if (received == 0) {
-				throw Socket::error("Connection closed");
-			}
-			else if (!Socket::ok(received)) {
-				throw Socket::error("Network recv error");
+				throw SocketError("Connection closed");
 			}
 
 			// Ищем конец введенной команды
@@ -54,15 +49,13 @@ void ClientHandler::main() {
 				executeCommand(command);
 
 				// Отправить приглашение
-				if (!Socket::ok(Socket::send(socket, prompt.c_str(), (int)prompt.size(), 0))) {
-					throw Socket::error("Network send error");
-				}
+				socket.send(prompt.c_str(), (int)prompt.size());
 			}
 
 			this_thread::sleep_for(chrono::milliseconds(50));
 		}
 	}
-	catch (Socket::error &ex) {
+	catch (SocketError &ex) {
 		// cout << ex.what() << endl;
 		delete this;
 		return;
@@ -135,9 +128,7 @@ bool ClientHandler::exportSequence() {
 		sendBuf.append("\r\n");
 
 		// Отправить в сокет
-		if (!Socket::ok(Socket::send(socket, sendBuf.c_str(), (int)sendBuf.size(), 0))) {
-			throw Socket::error("Network send error");
-		}
+		socket.send(sendBuf.c_str(), (int)sendBuf.size());
 
 		this_thread::sleep_for(chrono::milliseconds(50));
 	}

@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 #include <stdexcept>
 
 #ifdef _WIN32
@@ -12,37 +13,43 @@
 #endif
 
 
-namespace Socket {
-	// Адреса
-	int getaddrinfo(const char *node, const char *service, const addrinfo *hints, addrinfo **result);
-	void freeaddrinfo(addrinfo * &result);
+class Socket {
+public:
+    int handle = 0;
 
-	// Проверка
-	bool ok(int s);
+    // Создание
+    Socket();
+    Socket(int handle);
+    Socket(int family, int type, int protocol);
 
-	// Создание и подключение
-	int socket(int family, int type, int protocol);
-	int bind(int s, const sockaddr *addr, int addrlen);
-	int listen(int s, int backlog);
-	int connect(int s, const sockaddr *addr, int addrlen);
-	int accept(int s, sockaddr *addr, int *addrlen);
+    // Подключение
+    void bind(const sockaddr *addr, int addrlen);
+	void listen(int backlog);
+	void connect(const sockaddr *addr, int addrlen);
+	Socket accept();
+    Socket accept(sockaddr *addr, int *addrlen);
 
-	// Чтение и запись
-	int recv(int s, void *buf, int len, int flags);
-	int recvfrom(int s, void *buf, int len, int flags, sockaddr *from, int *fromlen);
-	int read(int s, void *buf, int len);
-	int send(int s, const void *buf, int len, int flags);
-	int sendto(int s, const void *buf, int len, int flags, const sockaddr *to, int tolen);
-	int write(int s, const void *buf, int len);
+    // Чтение и запись
+   	int recv(void *buf, int len, int flags = 0);
+	int recvfrom(void *buf, int len, int flags, sockaddr *from, int *fromlen);
+	int read(void *buf, int len);
+	int send(const void *buf, int len, int flags = 0);
+	int sendto(const void *buf, int len, int flags, const sockaddr *to, int tolen);
+	int write(const void *buf, int len);
+ 
+    // Закрытие
+    bool ok();
+	void close();
 
-	// Закрытие
-	int close(int s);
+    // Адреса
+	static void getAddrInfo(const char *node, const char *service, const addrinfo *hints, addrinfo **result);
+	static void freeAddrInfo(addrinfo * &result);
+};
 
-	// Исключение
-	class error : public std::runtime_error {
-	public:
-		error(const char *what);
-		error(const std::string &what);
-	};
-
-}
+class SocketError : public std::runtime_error {
+public:
+    SocketError(const char *what);
+    SocketError(const std::string &what);
+    SocketError(int code);
+    int code;
+};

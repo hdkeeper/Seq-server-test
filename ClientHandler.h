@@ -2,15 +2,17 @@
 #include <cstdint>
 #include <string>
 
+#include "Socket.h"
+
 
 class ClientHandler {
 public:
-	ClientHandler(int socket);
+	ClientHandler(Socket &socket);
 	~ClientHandler();
 	void main();
 
 private:
-	int socket = 0;
+	Socket socket;
 	constexpr static int SEQ_COUNT = 3;
 	uint64_t start[ClientHandler::SEQ_COUNT];
 	uint64_t step[ClientHandler::SEQ_COUNT];
