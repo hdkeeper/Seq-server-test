@@ -30,7 +30,7 @@ public:
     Socket accept(sockaddr *addr, int *addrlen);
 
     // Чтение и запись
-       int recv(void *buf, int len, int flags = 0);
+    int recv(void *buf, int len, int flags = 0);
     int recvfrom(void *buf, int len, int flags, sockaddr *from, int *fromlen);
     int read(void *buf, int len);
     int send(const void *buf, int len, int flags = 0);
