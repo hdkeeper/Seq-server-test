@@ -13,10 +13,10 @@ static bool signalReady = false;
 static std::mutex initMutex;
 
 void init() {
-	std::lock_guard<std::mutex> lock(initMutex);
-	if (signalReady) return;
-	signal(SIGPIPE, SIG_IGN);
-	signalReady = true;
+    std::lock_guard<std::mutex> lock(initMutex);
+    if (signalReady) return;
+    signal(SIGPIPE, SIG_IGN);
+    signalReady = true;
 }
 
 // Проверка успешности выполнения функций
@@ -27,7 +27,7 @@ static bool isOk(int s) {
 // Создание
 
 Socket::Socket() {
-	init();
+    init();
     this->handle = 0;
 }
 
@@ -130,7 +130,7 @@ int Socket::write(const void *buf, int len) {
 // Закрытие
 
 bool Socket::ok() {
-	return handle && isOk(handle);
+    return handle && isOk(handle);
 }
 
 void Socket::close() {
@@ -144,18 +144,18 @@ void Socket::close() {
 // Адреса
 
 void Socket::getAddrInfo(const char *node, const char *service, const addrinfo *hints, addrinfo **result) {
-	init();
-	int res = getaddrinfo(node, service, hints, result);
+    init();
+    int res = getaddrinfo(node, service, hints, result);
     if (res != 0) {
         throw SocketError(res);
     }
 }
 
 void Socket::freeAddrInfo(addrinfo * &result) {
-	if (result) {
-		freeaddrinfo(result);
-	}
-	result = nullptr;
+    if (result) {
+        freeaddrinfo(result);
+    }
+    result = nullptr;
 }
 
 // Исключения
@@ -167,6 +167,6 @@ SocketError::SocketError(const std::string &what) :
     std::runtime_error(what), code(0) {}
 
 SocketError::SocketError(int code) :
-	std::runtime_error(std::strerror(code)), code(code) {}
+    std::runtime_error(std::strerror(code)), code(code) {}
 
 #endif

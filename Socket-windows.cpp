@@ -34,7 +34,7 @@ static bool isOk(int s) {
 // Создание
 
 Socket::Socket() {
-	init();
+    init();
     this->handle = 0;
 }
 
@@ -138,7 +138,7 @@ int Socket::write(const void *buf, int len) {
 // Закрытие
 
 bool Socket::ok() {
-	return handle && isOk(handle);
+    return handle && isOk(handle);
 }
 
 void Socket::close() {
@@ -152,18 +152,18 @@ void Socket::close() {
 // Адреса
 
 void Socket::getAddrInfo(const char *node, const char *service, const addrinfo *hints, addrinfo **result) {
-	init();
-	int res = getaddrinfo(node, service, hints, result);
+    init();
+    int res = getaddrinfo(node, service, hints, result);
     if (res != 0) {
         throw SocketError(res);
     }
 }
 
 void Socket::freeAddrInfo(addrinfo * &result) {
-	if (result) {
-		freeaddrinfo(result);
-	}
-	result = nullptr;
+    if (result) {
+        freeaddrinfo(result);
+    }
+    result = nullptr;
 }
 
 // Исключения
@@ -177,12 +177,12 @@ SocketError::SocketError(const std::string &what) :
 static std::string getErrorString(int code) {
     char message[256];
     FormatMessageA(FORMAT_MESSAGE_FROM_SYSTEM, nullptr, code, 
-		MAKELANGID(LANG_ENGLISH, SUBLANG_ENGLISH_US),
+        MAKELANGID(LANG_ENGLISH, SUBLANG_ENGLISH_US),
         (LPSTR) &message, sizeof(message), nullptr);
-	return std::string(message);
+    return std::string(message);
 }
 
 SocketError::SocketError(int code) :
-	std::runtime_error(getErrorString(code)), code(code) {}
+    std::runtime_error(getErrorString(code)), code(code) {}
 
 #endif
