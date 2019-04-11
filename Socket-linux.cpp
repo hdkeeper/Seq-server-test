@@ -40,28 +40,28 @@ Socket::Socket(int family, int type, int protocol) {
     init();
     handle = ::socket(family, type, protocol);
     if (!isOk(handle)) {
-        throw SocketError(std::errno);
+        throw SocketError(errno);
     }
 }
 
 void Socket::bind(const sockaddr *addr, int addrlen) {
     int res = ::bind(handle, addr, addrlen);
     if (!isOk(res)) {
-        throw SocketError(std::errno);
+        throw SocketError(errno);
     }
 }
 
 void Socket::listen(int backlog) {
     int res = ::listen(handle, backlog);
     if (!isOk(res)) {
-        throw SocketError(std::errno);
+        throw SocketError(errno);
     }
 }
 
 void Socket::connect(const sockaddr *addr, int addrlen) {
     int res = ::connect(handle, addr, addrlen);
     if (!isOk(res)) {
-        throw SocketError(std::errno);
+        throw SocketError(errno);
     }
 }
 
@@ -72,7 +72,7 @@ Socket Socket::accept() {
 Socket Socket::accept(sockaddr *addr, int *addrlen) {
     int res = ::accept(handle, addr, (socklen_t *)addrlen);
     if (!isOk(res)) {
-        throw SocketError(std::errno);
+        throw SocketError(errno);
     }
     return Socket(res);
 }
@@ -82,7 +82,7 @@ Socket Socket::accept(sockaddr *addr, int *addrlen) {
 int Socket::recv(void *buf, int len, int flags) {
     int res = ::recv(handle, buf, len, flags);
     if (!isOk(res)) {
-        throw SocketError(std::errno);
+        throw SocketError(errno);
     }
     return res;
 }
@@ -90,7 +90,7 @@ int Socket::recv(void *buf, int len, int flags) {
 int Socket::recvfrom(void *buf, int len, int flags, sockaddr *from, int *fromlen) {
     int res = ::recvfrom(handle, (char *)buf, len, flags, from, (socklen_t *)fromlen);
     if (!isOk(res)) {
-        throw SocketError(std::errno);
+        throw SocketError(errno);
     }
     return res;
 }
@@ -98,7 +98,7 @@ int Socket::recvfrom(void *buf, int len, int flags, sockaddr *from, int *fromlen
 int Socket::read(void *buf, int len) {
     int res = ::read(handle, buf, len);
     if (!isOk(res)) {
-        throw SocketError(std::errno);
+        throw SocketError(errno);
     }
     return res;
 }
@@ -106,7 +106,7 @@ int Socket::read(void *buf, int len) {
 int Socket::send(const void *buf, int len, int flags) {
     int res = ::send(handle, buf, len, flags);
     if (!isOk(res)) {
-        throw SocketError(std::errno);
+        throw SocketError(errno);
     }
     return res;
 }
@@ -114,7 +114,7 @@ int Socket::send(const void *buf, int len, int flags) {
 int Socket::sendto(const void *buf, int len, int flags, const sockaddr *to, int tolen) {
     int res = ::sendto(handle, buf, len, flags, to, tolen);
     if (!isOk(res)) {
-        throw SocketError(std::errno);
+        throw SocketError(errno);
     }
     return res;
 }
@@ -122,7 +122,7 @@ int Socket::sendto(const void *buf, int len, int flags, const sockaddr *to, int 
 int Socket::write(const void *buf, int len) {
     int res = ::write(handle, buf, len);
     if (!isOk(res)) {
-        throw SocketError(std::errno);
+        throw SocketError(errno);
     }
     return res;
 }
@@ -136,7 +136,7 @@ bool Socket::ok() {
 void Socket::close() {
     int res = ::close(handle);
     if (!isOk(res)) {
-        throw SocketError(std::errno);
+        throw SocketError(errno);
     }
     handle = 0;
 }
